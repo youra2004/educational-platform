@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getCourseList } from "@/api/courses";
 import { ICourse } from "../../types/courses";
 import Image from "next/image";
-import { Button } from "../../components";
+import { Button, Input } from "../../components";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -13,20 +13,31 @@ const Courses = () => {
   const t = useTranslations();
 
   const [courses, setCourses] = useState<ICourse[]>([]);
+  const [searchValue, setSearchValue] = useState("");
 
   const redirectToCourse = (id: number) => {
     router.push(`/courses/${id}`);
   };
 
+  const getCourses = async (searchValue?: string) => {
+    const { data } = await getCourseList(searchValue);
+
+    setCourses(data.data);
+  };
+
   useEffect(() => {
-    const getCourses = async () => {
-      const { data } = await getCourseList();
-
-      setCourses(data.data);
-    };
-
     getCourses();
   }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      getCourses(searchValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [searchValue]);
 
   return (
     <div className="flex flex-col gap-4 bg-primary px-24 py-10 md:px-32 lg:px-40">
@@ -35,6 +46,13 @@ const Courses = () => {
           {t("courses_list")}
         </h1>
         <span className="text-grey">{t("choose_course")}</span>
+
+        <Input
+          className="w-[600px]"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          placeholder={t("search")}
+        />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
