@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { LanguageSelector } from "./LanguageSelector";
 import { useUserStore } from "@/stores/user-store";
 import { getMe } from "@/api/user";
+import { getItem } from "@/helpers/localstorage";
 
 export const Header = () => {
   const t = useTranslations();
@@ -41,13 +42,17 @@ export const Header = () => {
   };
 
   useEffect(() => {
+    const jwtToken = getItem("user-token");
+
     const requestUser = async () => {
       const { data } = await getMe();
 
       setUser(data);
     };
 
-    requestUser();
+    if (jwtToken) {
+      requestUser();
+    }
   }, []);
 
   return (
