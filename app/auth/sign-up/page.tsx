@@ -8,19 +8,24 @@ import { Button, Input } from "@/components";
 import { FormEventHandler, useState } from "react";
 import { signUp } from "@/api/auth";
 import Link from "next/link";
+import { useUserStore } from "@/stores/user-store";
 
 const SignIn = () => {
   const router = useRouter();
   const t = useTranslations();
+  const setUser = useUserStore((state) => state.setUser);
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const trySignIn: FormEventHandler<HTMLFormElement> = (e) => {
+  const trySignIn: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    signUp({ email, username, password }).then(() => router.push("/courses"));
+    const user = await signUp({ email, username, password });
+
+    setUser(user);
+    router.push("/courses");
   };
 
   return (

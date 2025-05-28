@@ -1,4 +1,4 @@
-import {defineRouting} from 'next-intl/routing';
+import { defineRouting } from "next-intl/routing";
 
 export const routing = defineRouting({
   // Available locales in your app
@@ -9,4 +9,3 @@ export const routing = defineRouting({
   localeDetection: true,
   localePrefix: "never",
 });
-

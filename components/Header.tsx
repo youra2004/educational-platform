@@ -5,9 +5,14 @@ import { Link } from "./Link";
 import { Button } from "./Button";
 import { useTranslations } from "next-intl";
 import { LanguageSelector } from "./LanguageSelector";
+import { useUserStore } from "@/stores/user-store";
+import { getMe } from "@/api/user";
 
 export const Header = () => {
   const t = useTranslations();
+  const user = useUserStore((state) => state.user);
+  const clearUser = useUserStore((state) => state.clearUser);
+  const setUser = useUserStore((state) => state.setUser);
 
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -32,7 +37,18 @@ export const Header = () => {
   const signOut = () => {
     localStorage.removeItem("user-token");
     window.location.href = "/auth/sign-in";
+    clearUser();
   };
+
+  useEffect(() => {
+    const requestUser = async () => {
+      const { data } = await getMe();
+
+      setUser(data);
+    };
+
+    requestUser();
+  }, []);
 
   return (
     <header
@@ -44,17 +60,21 @@ export const Header = () => {
         {t("educational_platform")}
       </h2>
 
-      <div className="flex gap-4">
-        <Link href="/courses">{t("courses")}</Link>
-        <Link href="/leaders">{t("leaderboards")}</Link>
-        <Link href="/study-notes">{t("study_notes")}</Link>
-      </div>
+      {user && (
+        <div className="flex gap-4">
+          <Link href="/courses">{t("courses")}</Link>
+          <Link href="/leaders">{t("leaderboards")}</Link>
+          <Link href="/study-notes">{t("study_notes")}</Link>
+        </div>
+      )}
 
       <div className="flex gap-4">
         <LanguageSelector />
-        <Button variant="outline" onClick={signOut}>
-          {t("leave")}
-        </Button>
+        {user && (
+          <Button variant="outline" onClick={signOut}>
+            {t("leave")}
+          </Button>
+        )}
       </div>
     </header>
   );

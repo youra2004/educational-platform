@@ -8,18 +8,23 @@ import { FormEventHandler, useState } from "react";
 import { signIn } from "@/api/auth";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { useUserStore } from "@/stores/user-store";
 
 const SignIn = () => {
   const router = useRouter();
   const t = useTranslations();
+  const setUser = useUserStore((state) => state.setUser);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const trySignIn: FormEventHandler<HTMLFormElement> = (e) => {
+  const trySignIn: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    signIn({ identifier: email, password }).then(() => router.push("/courses"));
+    const user = await signIn({ identifier: email, password });
+
+    setUser(user);
+    router.push("/courses");
   };
 
   return (

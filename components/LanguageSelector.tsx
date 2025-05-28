@@ -17,7 +17,7 @@ export function LanguageSelector() {
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const newLocale = e.target.value;
 
-    Cookies.set("NEXT_LOCALE", newLocale, { path: "/" });
+    Cookies.set("NEXT_LOCALE", newLocale);
     router.refresh();
   };
 

@@ -6,6 +6,8 @@ export const signIn = async (payload: ILoginPayload) => {
   const { data } = await axios.post<ILoginResponse>("/auth/local", payload);
 
   setItem("user-token", data.jwt);
+
+  return data.user;
 };
 
 export const signUp = async (payload: IRegisterPayload) => {
@@ -15,4 +17,6 @@ export const signUp = async (payload: IRegisterPayload) => {
   );
 
   setItem("user-token", data.jwt);
+
+  return data.user;
 };

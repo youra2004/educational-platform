@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import { Footer, Header } from "../components";
-import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
+import { Footer, Header } from "../components";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
