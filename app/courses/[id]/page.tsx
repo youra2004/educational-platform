@@ -106,8 +106,8 @@ export default function CourseDetailPage() {
                   </div>
                 </div>
 
-                <div className="flex gap-4">
-                  {course?.status !== "completed" && (
+                {course?.status !== "completed" && (
+                  <div className="flex gap-4">
                     <Button
                       variant="primary"
                       className="flex items-center gap-2"
@@ -120,17 +120,8 @@ export default function CourseDetailPage() {
                           : t("start_course")}
                       </span>
                     </Button>
-                  )}
-                  <Button
-                    variant="secondary"
-                    className="flex items-center gap-2"
-                  >
-                    <i className="fas fa-share-alt" />
-                    <span className="font-medium text-gray-500">
-                      {t("share_course")}
-                    </span>
-                  </Button>
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           </>
