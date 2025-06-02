@@ -48,7 +48,7 @@ const Courses = () => {
         <span className="text-grey">{t("choose_course")}</span>
 
         <Input
-          className="w-[600px]"
+          className="!w-[600px]"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           placeholder={t("search")}
